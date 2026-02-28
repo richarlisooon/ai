@@ -4,16 +4,22 @@ from datetime import datetime
 import logging
 import os
 from logging.handlers import RotatingFileHandler
+import requests
+import psycopg2
+from psycopg2 import sql
 
 
 class Bot:
     def __init__(self):
         self.patterns = []
         self.user_name = None
+        self.user_id = None
         self.conversation_history = []
         self.setup_logging()
+        self.init_database()
         self.register_patterns()
         self.logger.info("Бот инициализирован")
+        self.weather_api_key = "50be0e6cd6d1b7b993c94418ef601f60"
 
     def setup_logging(self):
         log_dir = "logs"
@@ -41,75 +47,83 @@ class Bot:
         self.logger.addHandler(file_handler)
         self.logger.addHandler(console_handler)
 
-    def log_user_action(self, action, details=""):
-        user_info = f"Пользователь: {self.user_name if self.user_name else 'Неизвестный'}"
-        self.logger.info(f"{user_info} - {action} - {details}")
+    def init_database(self):
+        try:
+            self.conn = psycopg2.connect(
+                database="bot_db",
+                user="postgres",
+                password="0000",
+                host="localhost",
+                port="5432"
+            )
+            self.conn.autocommit = True
+
+            self.cur = self.conn.cursor()
+
+            self.logger.info("База данных подключена!")
+            print("✅ База данных подключена")
+
+        except Exception as e:
+            self.logger.error(f"Ошибка БД: {e}")
+            raise e
+
+    def save_user(self, name):
+        try:
+            self.cur.execute(
+                "INSERT INTO users (name) VALUES (%s) ON CONFLICT (name) DO NOTHING RETURNING id",
+                (name,)
+            )
+            result = self.cur.fetchone()
+            if result:
+                self.user_id = result[0]
+            else:
+                self.cur.execute("SELECT id FROM users WHERE name = %s", (name,))
+                self.user_id = self.cur.fetchone()[0]
+
+            self.conn.commit()
+            self.logger.info(f"Пользователь {name} сохранен в БД")
+
+        except Exception as e:
+            self.logger.error(f"Ошибка сохранения пользователя: {e}")
+
+    def save_log(self, message, response):
+        if self.user_id:
+            try:
+                self.cur.execute(
+                    "INSERT INTO logs (user_id, message, response) VALUES (%s, %s, %s)",
+                    (self.user_id, message, response)
+                )
+                self.conn.commit()
+            except Exception as e:
+                self.logger.error(f"Ошибка сохранения лога: {e}")
 
     def register_patterns(self):
         self.logger.debug("Регистрация паттернов")
 
-        self.patterns.append((
-            re.compile(
-                r'\b(?:привет|здравствуй|здравствуйте|хай|хелло|hello|hi|доброе утро|добрый день|добрый вечер|здарова|салют|хей)\b',
-                re.IGNORECASE),
-            self.greeting
-        ))
-
-        self.patterns.append((
-            re.compile(r'\b(?:пока|до свидания|прощай|bye|goodbye|чао|увидимся|до встречи|покеда|всего доброго)\b',
-                       re.IGNORECASE),
-            self.farewell
-        ))
-
-        self.patterns.append((
-            re.compile(r'\b(?:как дела|как жизнь|как ты|чё как|how are you)\b', re.IGNORECASE),
-            self.how_are_you
-        ))
-
-        self.patterns.append((
-            re.compile(r'\b(?:сколько время|который час|времени)\b', re.IGNORECASE),
-            self.time_response
-        ))
-
-        self.patterns.append((
-            re.compile(r'\b(?:спасибо|благодарю|сенкс|thanks)\b', re.IGNORECASE),
-            self.thanks_response
-        ))
-
-        self.patterns.append((
-            re.compile(r'\b(?:молодец|умница|класс|отлично|супер|красава)\b', re.IGNORECASE),
-            self.compliment_response
-        ))
-
-        self.patterns.append((
-            re.compile(r'\b(?:как тебя зовут|твоё имя|кто ты)\b', re.IGNORECASE),
-            self.who_are_you
-        ))
-
-        self.patterns.append((
-            re.compile(r'\b(?:калькулятор|посчитай|вычисли|сколько будет)\b', re.IGNORECASE),
-            self.calculator
-        ))
-
-        self.patterns.append((
-            re.compile(r'\b(?:погода|что на улице|холодно|тепло)\b', re.IGNORECASE),
-            self.weather
-        ))
-
-        self.patterns.append((
-            re.compile(r'\b(?:история|что мы обсуждали|что я писал)\b', re.IGNORECASE),
-            self.show_history
-        ))
-
-        self.patterns.append((
-            re.compile(r'\b(?:очисти историю|забудь|clear history)\b', re.IGNORECASE),
-            self.clear_history
-        ))
-
-        self.patterns.append((
-            re.compile(r'\b(?:логи|покажи логи|посмотреть логи)\b', re.IGNORECASE),
-            self.show_logs
-        ))
+        self.patterns.append((re.compile(
+            r'\b(?:привет|здравствуй|здравствуйте|хай|хелло|hello|hi|доброе утро|добрый день|добрый вечер|здарова|салют|хей)\b',
+            re.IGNORECASE), self.greeting))
+        self.patterns.append((re.compile(
+            r'\b(?:пока|до свидания|прощай|bye|goodbye|чао|увидимся|до встречи|покеда|всего доброго)\b', re.IGNORECASE),
+                              self.farewell))
+        self.patterns.append(
+            (re.compile(r'\b(?:как дела|как жизнь|как ты|чё как|how are you)\b', re.IGNORECASE), self.how_are_you))
+        self.patterns.append(
+            (re.compile(r'\b(?:сколько время|который час|времени)\b', re.IGNORECASE), self.time_response))
+        self.patterns.append(
+            (re.compile(r'\b(?:спасибо|благодарю|сенкс|thanks)\b', re.IGNORECASE), self.thanks_response))
+        self.patterns.append((re.compile(r'\b(?:молодец|умница|класс|отлично|супер|красава)\b', re.IGNORECASE),
+                              self.compliment_response))
+        self.patterns.append((re.compile(r'\b(?:как тебя зовут|твоё имя|кто ты)\b', re.IGNORECASE), self.who_are_you))
+        self.patterns.append(
+            (re.compile(r'\b(?:калькулятор|посчитай|вычисли|сколько будет)\b', re.IGNORECASE), self.calculator))
+        self.patterns.append(
+            (re.compile(r'\b(?:погода|что на улице|холодно|тепло|температура|градусы)\b', re.IGNORECASE), self.weather))
+        self.patterns.append(
+            (re.compile(r'\b(?:история|что мы обсуждали|что я писал)\b', re.IGNORECASE), self.show_history))
+        self.patterns.append(
+            (re.compile(r'\b(?:очисти историю|забудь|clear history)\b', re.IGNORECASE), self.clear_history))
+        self.patterns.append((re.compile(r'\b(?:логи|покажи логи|посмотреть логи)\b', re.IGNORECASE), self.show_logs))
 
         self.calc_pattern = re.compile(r'([+-]?\d*\.?\d+)\s*([+\-*/])\s*([+-]?\d*\.?\d+)')
         self.name_pattern = re.compile(r'(?:меня зовут|my name is|я )\s*([А-Яа-яA-Za-z]+)', re.IGNORECASE)
@@ -169,7 +183,34 @@ class Bot:
 
     def weather(self, match):
         self.log_user_action("запрос погоды")
-        return ("седня не")
+
+        try:
+            city = "Nizhny Novgorod"
+            city_match = re.search(r'погода в (\w+)', match.string if hasattr(match, 'string') else '', re.IGNORECASE)
+            if city_match:
+                city = city_match.group(1)
+
+            url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={self.weather_api_key}&units=metric&lang=ru"
+            response = requests.get(url, timeout=10)
+
+            if response.status_code == 200:
+                data = response.json()
+
+                weather_response = (
+                    f"🌆 Город: {data['name']}\n"
+                    f"⛅ Погода: {data['weather'][0]['description'].capitalize()}\n"
+                    f"🌡 Температура: {data['main']['temp']:.1f}°C (ощущается как {data['main']['feels_like']:.1f}°C)\n"
+                    f"💧 Влажность: {data['main']['humidity']}%\n"
+                    f"🌬 Ветер: {data['wind']['speed']:.1f} м/с"
+                )
+
+                return weather_response
+            else:
+                return f"❌ Не могу найти город {city}"
+
+        except Exception as e:
+            self.logger.error(f"Ошибка погоды: {e}")
+            return "❌ Ошибка получения погоды"
 
     def show_history(self, match):
         self.log_user_action("запрос истории")
@@ -241,6 +282,10 @@ class Bot:
             self.logger.error(f"Ошибка вычисления: {e}, выражение: {expression}")
             return None
 
+    def log_user_action(self, action, details=""):
+        user_info = f"Пользователь: {self.user_name if self.user_name else 'Неизвестный'}"
+        self.logger.info(f"{user_info} - {action} - {details}")
+
     def process_message(self, message):
         self.logger.info(f"Входящее сообщение: {message}")
         self.conversation_history.append(message)
@@ -250,32 +295,44 @@ class Bot:
         if farewell_pattern.search(message):
             response = self.farewell(farewell_pattern.search(message))
             self.logger.info(f"Исходящий ответ: {response}")
+            self.save_log(message, response)
             return response
 
         calc_result = self.calculate(message)
         if calc_result:
             self.logger.info(f"Результат вычисления: {calc_result}")
+            self.save_log(message, calc_result)
             return calc_result
 
         name_match = self.name_pattern.search(message)
         if name_match and not re.search(r'\b(?:как тебя зовут|твоё имя|кто ты)\b', message, re.IGNORECASE):
             old_name = self.user_name
             self.user_name = name_match.group(1)
+            self.save_user(self.user_name)
             self.log_user_action("представился", f"Был: {old_name}, Стал: {self.user_name}")
             response = f"приятно познакомиться, {self.user_name}!"
             self.logger.info(f"Исходящий ответ: {response}")
+            self.save_log(message, response)
             return response
 
         for pattern, handler in self.patterns:
             if pattern.search(message):
                 response = handler(pattern.search(message))
                 self.logger.info(f"Исходящий ответ: {response}")
+                self.save_log(message, response)
                 return response
 
         response = random.choice(["ниче не пон", "не понял, повтори", "че?", "а?", "ты кто", "говори проще"])
         self.logger.info(f"Ответ по умолчанию: {response}")
         self.log_user_action("непонятное сообщение", message)
+        self.save_log(message, response)
         return response
+
+    def __del__(self):
+        if hasattr(self, 'cur'):
+            self.cur.close()
+        if hasattr(self, 'conn'):
+            self.conn.close()
 
 
 if __name__ == '__main__':
