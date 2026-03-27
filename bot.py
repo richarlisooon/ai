@@ -9,6 +9,12 @@ from database import PostgresDB
 from nlp import NLPEngine
 from weather import WeatherService
 from dialog_manager import DialogManager, DialogState
+from intent_classifier import (
+    IntentClassifier,
+    INTENT_GREETING, INTENT_GOODBYE, INTENT_WEATHER,
+    INTENT_HOW, INTENT_TIME, INTENT_THANKS, INTENT_COMPLIMENT,
+    INTENT_WHO, INTENT_CALCULATOR, INTENT_HISTORY, INTENT_UNKNOWN,
+)
 
 
 class Bot:
@@ -24,37 +30,42 @@ class Bot:
         self.weather_service = WeatherService(config.WEATHER_API_KEY, self.logger)
         self.dialog = DialogManager()
 
+        # ── ML-классификатор интентов (Задача 2) ──
+        try:
+            self.intent_clf = IntentClassifier(model_dir="models", logger=self.logger)
+        except FileNotFoundError:
+            self.intent_clf = None
+            self.logger.warning(
+                "ML-классификатор не загружен. "
+                "Запустите train_model.py для обучения модели."
+            )
+
         self._register_patterns()
         self.logger.info("Бот инициализирован")
 
     # ──────────────────────── паттерны ────────────────────────
 
     def _register_patterns(self):
-        self.logger.debug("Регистрация паттернов")
+        self.logger.debug("Регистрация паттернов — только необходимые regex")
+
+        # Оставляем только паттерны которым нужно извлечение данных или
+        # которые критичны для работы main.py (farewell завершает цикл)
         self.patterns = [
-            (re.compile(
-                r'\b(?:привет|здравствуй|здравствуйте|хай|хелло|hello|hi|доброе утро|добрый день|добрый вечер|здарова|салют|хей)\b',
-                re.IGNORECASE), self.greeting),
-            (re.compile(
-                r'\b(?:пока|до свидания|прощай|bye|goodbye|чао|увидимся|до встречи|покеда|всего доброго)\b',
-                re.IGNORECASE), self.farewell),
-            (re.compile(r'\b(?:как дела|как жизнь|как ты|чё как|how are you)\b', re.IGNORECASE), self.how_are_you),
-            (re.compile(r'\b(?:сколько время|который час|времени)\b', re.IGNORECASE), self.time_response),
-            (re.compile(r'\b(?:спасибо|благодарю|сенкс|thanks)\b', re.IGNORECASE), self.thanks_response),
-            (re.compile(r'\b(?:молодец|умница|класс|отлично|супер|красава)\b', re.IGNORECASE), self.compliment_response),
-            (re.compile(r'\b(?:как тебя зовут|твоё имя|кто ты)\b', re.IGNORECASE), self.who_are_you),
-            (re.compile(r'\b(?:калькулятор|посчитай|вычисли|сколько будет)\b', re.IGNORECASE), self.calculator),
-            (re.compile(r'\b(?:погода|что на улице|холодно|тепло|температура|градусы)\b', re.IGNORECASE), self._weather_handler),
-            (re.compile(r'\b(?:история|что мы обсуждали|что я писал)\b', re.IGNORECASE), self.show_history),
+            # служебные — не имеют интента в ML
             (re.compile(r'\b(?:очисти историю|забудь|clear history)\b', re.IGNORECASE), self.clear_history),
             (re.compile(r'\b(?:логи|покажи логи|посмотреть логи)\b', re.IGNORECASE), self.show_logs),
         ]
 
+        # калькулятор — нужен для извлечения чисел и оператора
         self.calc_pattern = re.compile(r'([+-]?\d*\.?\d+)\s*([+\-*/])\s*([+-]?\d*\.?\d+)')
+
+        # имя — нужно извлечь само имя из сообщения
         self.name_pattern = re.compile(
             r'(?:меня зовут|my name is)\s+([А-Яа-яA-Za-z]+)|^(?:я)\s+([А-Яа-яA-Za-z]+)$',
             re.IGNORECASE
         )
+
+        # прощание — нужен в main.py для завершения цикла while
         self.farewell_pattern = re.compile(
             r'\b(?:пока|до свидания|прощай|bye|goodbye|чао|увидимся|до встречи|покеда|всего доброго)\b',
             re.IGNORECASE
@@ -98,38 +109,8 @@ class Bot:
             self._save_log(message, response)
             return response
 
-        # прощание
-        if self.farewell_pattern.search(message):
-            response = self.farewell(self.farewell_pattern.search(message))
-            self.logger.info(f"Исходящий ответ: {response}")
-            self._save_log(message, response)
-            return response
-
-        # калькулятор
-        calc_result = self._calculate(message)
-        if calc_result:
-            self.logger.info(f"Результат вычисления: {calc_result}")
-            self._save_log(message, calc_result)
-            return calc_result
-
-        # погода через NLP — если город уже есть в сообщении
-        if nlp_analysis and nlp_analysis.get('is_weather_query'):
-            city_raw = self.nlp_engine.extract_city(message)
-            if city_raw:
-                # город указан явно — передаём уже извлечённый город, не вызываем extract_city повторно
-                response = self._weather_nlp(message, nlp_analysis, city_raw)
-            else:
-                # города нет — переходим в WAIT_CITY
-                forecast_words = ['завтра', 'на завтра', 'завтрашн', 'следующий день']
-                is_forecast = any(w in message.lower() for w in forecast_words)
-                self.dialog.set_context(uid or 0, 'is_forecast', is_forecast)
-                self.dialog.set_state(uid or 0, DialogState.WAIT_CITY)
-                response = "в каком городе?"
-            self.logger.info(f"Исходящий ответ (погода): {response}")
-            self._save_log(message, response)
-            return response
-
-        # имя пользователя
+        # ── 1. Имя пользователя — regex первым, до ML ─────────────────
+        # ML путает "меня зовут X" с who_are_you
         name_match = self.name_pattern.search(message)
         if name_match:
             new_name = next((g for g in name_match.groups() if g is not None), None)
@@ -143,7 +124,47 @@ class Bot:
                 self._save_log(message, response)
                 return response
 
-        # паттерны
+        # ── 2. Калькулятор — regex, нужно извлечь числа ────────────────
+        calc_result = self._calculate(message)
+        if calc_result:
+            self.logger.info(f"Результат вычисления: {calc_result}")
+            self._save_log(message, calc_result)
+            return calc_result
+
+        # ── 3. ML-классификатор — основная логика ──────────────────────
+        if self.intent_clf is not None:
+            ml_intent = self.intent_clf.predict(message)
+            self.logger.info(f"ML-классификатор: intent={ml_intent!r}")
+
+            response = self._handle_ml_intent(message, ml_intent, uid or 0, nlp_analysis)
+            if response is not None:
+                self.logger.info(f"Исходящий ответ (ML): {response}")
+                self._save_log(message, response)
+                return response
+
+        # ── 4. Прощание — regex, нужен для завершения цикла в main.py ──
+        if self.farewell_pattern.search(message):
+            response = self.farewell(self.farewell_pattern.search(message))
+            self.logger.info(f"Исходящий ответ: {response}")
+            self._save_log(message, response)
+            return response
+
+        # ── 5. NLP погода — fallback если ML не поймал ─────────────────
+        if nlp_analysis and nlp_analysis.get('is_weather_query'):
+            city_raw = self.nlp_engine.extract_city(message)
+            if city_raw:
+                response = self._weather_nlp(message, nlp_analysis, city_raw)
+            else:
+                forecast_words = ['завтра', 'на завтра', 'завтрашн', 'следующий день']
+                is_forecast = any(w in message.lower() for w in forecast_words)
+                self.dialog.set_context(uid or 0, 'is_forecast', is_forecast)
+                self.dialog.set_state(uid or 0, DialogState.WAIT_CITY)
+                response = "в каком городе?"
+            self.logger.info(f"Исходящий ответ (NLP fallback): {response}")
+            self._save_log(message, response)
+            return response
+
+        # ── 6. Служебные regex (логи, очистка истории) ─────────────────
         for pattern, handler in self.patterns:
             if pattern.search(message):
                 response = handler(pattern.search(message))
@@ -151,11 +172,75 @@ class Bot:
                 self._save_log(message, response)
                 return response
 
+        # ── 7. Fallback ─────────────────────────────────────────────────
         response = random.choice(["ниче не пон", "не понял, повтори", "че?", "а?", "ты кто", "говори проще"])
         self.logger.info(f"Ответ по умолчанию: {response}")
         self._log_action("непонятное сообщение", message)
         self._save_log(message, response)
         return response
+
+    # ──────────────────────── ML-обработчик интентов (Задача 2) ────────────────────────
+
+    def _handle_ml_intent(self, message: str, intent: str, uid: int,
+                          nlp_analysis: dict | None) -> str | None:
+        """
+        FSM-диспетчер для интентов, определённых ML-моделью.
+
+        Возвращает строку-ответ или None, если интент не распознан /
+        нужно передать управление дальше (regex-паттернам).
+
+        Схема:
+            intent → обработчик
+            unknown → None (передаём управление дальше)
+        """
+        # Для погоды используем богатую NLP-логику (NER + FSM)
+        if intent == INTENT_WEATHER:
+            city_raw = self.nlp_engine.extract_city(message)
+            if city_raw:
+                return self._weather_nlp(message, nlp_analysis, city_raw)
+            else:
+                forecast_words = ["завтра", "на завтра", "завтрашн", "следующий день"]
+                is_forecast = any(w in message.lower() for w in forecast_words)
+                self.dialog.set_context(uid, "is_forecast", is_forecast)
+                self.dialog.set_state(uid, DialogState.WAIT_CITY)
+                return "в каком городе?"
+
+        # Простые интенты — делегируем существующим обработчикам
+        _fake_match = type("M", (), {"group": lambda self, n=0: message, "string": message})()
+
+        if intent == INTENT_GREETING:
+            return self.greeting(_fake_match)
+
+        if intent == INTENT_GOODBYE:
+            return self.farewell(_fake_match)
+
+        if intent == INTENT_HOW:
+            return self.how_are_you(_fake_match)
+
+        if intent == INTENT_TIME:
+            return self.time_response(_fake_match)
+
+        if intent == INTENT_THANKS:
+            return self.thanks_response(_fake_match)
+
+        if intent == INTENT_COMPLIMENT:
+            return self.compliment_response(_fake_match)
+
+        if intent == INTENT_WHO:
+            return self.who_are_you(_fake_match)
+
+        if intent == INTENT_CALCULATOR:
+            # Сначала пробуем вычислить выражение из самого сообщения
+            calc = self._calculate(message)
+            if calc:
+                return calc
+            return self.calculator(_fake_match)
+
+        if intent == INTENT_HISTORY:
+            return self.show_history(_fake_match)
+
+        # INTENT_UNKNOWN или неизвестный — передаём управление дальше
+        return None
 
     # ──────────────────────── FSM-обработчики ────────────────────────
 

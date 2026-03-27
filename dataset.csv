@@ -1,0 +1,747 @@
+text,intent
+привет,greeting
+здравствуй,greeting
+хай,greeting
+хелло,greeting
+здарова,greeting
+салют,greeting
+доброе утро,greeting
+добрый день,greeting
+добрый вечер,greeting
+hello,greeting
+hi,greeting
+хей,greeting
+приветствую,greeting
+рад видеть тебя,greeting
+здравствуйте,greeting
+приветик,greeting
+доброго времени суток,greeting
+ку,greeting
+добро пожаловать,greeting
+ну привет,greeting
+о привет,greeting
+хай хай,greeting
+йо,greeting
+здравия желаю,greeting
+привет бот,greeting
+хай боб,greeting
+добрый день бот,greeting
+приветики,greeting
+ку ку,greeting
+хеллоу,greeting
+хола,greeting
+хаюшки,greeting
+привет привет,greeting
+ой привет,greeting
+здравствуй бот,greeting
+рад тебя видеть,greeting
+приветствую тебя,greeting
+добрейшего утречка,greeting
+доброго вечера,greeting
+доброй ночи,greeting
+хай там,greeting
+салютики,greeting
+привет как ты,greeting
+здравствуй как дела,greeting
+ну здорово,greeting
+алоха,greeting
+хелло бот,greeting
+приветствую вас,greeting
+доброго дня,greeting
+доброго утра,greeting
+доброй ночи бот,greeting
+хей бот,greeting
+здорово бот,greeting
+ку бот,greeting
+салют бот,greeting
+начинаем,greeting
+вот и я,greeting
+это снова я,greeting
+я снова здесь,greeting
+снова привет,greeting
+опять привет,greeting
+снова я,greeting
+опять я,greeting
+я вернулся,greeting
+вернулся,greeting
+я тут,greeting
+эй,greeting
+эй бот,greeting
+окей бот,greeting
+ок привет,greeting
+хай снова,greeting
+привет снова,greeting
+хеллоу снова,greeting
+добрый,greeting
+пока,goodbye
+до свидания,goodbye
+прощай,goodbye
+bye,goodbye
+goodbye,goodbye
+чао,goodbye
+увидимся,goodbye
+до встречи,goodbye
+покеда,goodbye
+всего доброго,goodbye
+давай пока,goodbye
+ладно пока,goodbye
+бывай,goodbye
+прощаемся,goodbye
+всего хорошего,goodbye
+счастливо,goodbye
+до скорого,goodbye
+пока пока,goodbye
+чао чао,goodbye
+выхожу,goodbye
+ухожу,goodbye
+завершить,goodbye
+выход,goodbye
+прощаюсь,goodbye
+всё на сегодня,goodbye
+до завтра,goodbye
+ладно давай,goodbye
+ну ладно пока,goodbye
+see you,goodbye
+bye bye,goodbye
+ciao,goodbye
+adios,goodbye
+увидимся позже,goodbye
+до следующего раза,goodbye
+всё спасибо пока,goodbye
+закругляюсь,goodbye
+заканчиваем,goodbye
+на сегодня всё,goodbye
+отключаюсь,goodbye
+выключаюсь,goodbye
+ладно хватит,goodbye
+ухожу пока,goodbye
+бывай здоров,goodbye
+всего тебе доброго,goodbye
+до новых встреч,goodbye
+пока бот,goodbye
+окей пока,goodbye
+ок пока,goodbye
+всё удачи,goodbye
+давай до свидания,goodbye
+ну всё пока,goodbye
+хватит на сегодня,goodbye
+заканчиваю,goodbye
+конец разговора,goodbye
+завершаю,goodbye
+завершаем разговор,goodbye
+расстаёмся,goodbye
+ну бывай,goodbye
+бывай пока,goodbye
+всё буду,goodbye
+ну я пошёл,goodbye
+я пошёл,goodbye
+мне пора,goodbye
+пора уходить,goodbye
+ухожу уже,goodbye
+всё я ушёл,goodbye
+до связи,goodbye
+на связи,goodbye
+до связи бот,goodbye
+пока что всё,goodbye
+это всё,goodbye
+погода,weather
+какая погода,weather
+погода в москве,weather
+будет ли дождь,weather
+что на улице,weather
+температура на улице,weather
+сколько градусов,weather
+холодно ли,weather
+тепло ли,weather
+прогноз погоды,weather
+погода сегодня,weather
+погода завтра,weather
+ждать ли дождя,weather
+нужна ли куртка,weather
+брать ли зонт,weather
+погода в питере,weather
+прогноз на завтра,weather
+какой прогноз,weather
+осадки сегодня,weather
+ветрено ли,weather
+снег будет,weather
+будет ли снег,weather
+какая температура,weather
+как погода в казани,weather
+погода в новгороде,weather
+что с погодой,weather
+покажи погоду,weather
+узнай погоду,weather
+погода в екатеринбурге,weather
+скажи погоду,weather
+дождик будет,weather
+на улице холодно,weather
+на улице тепло,weather
+погода в самаре,weather
+прогноз на неделю,weather
+погода на выходные,weather
+что за погода,weather
+погода в новосибирске,weather
+погода в красноярске,weather
+температура сегодня,weather
+температура завтра,weather
+нужен зонт,weather
+брать куртку,weather
+идёт ли дождь,weather
+будет ли гроза,weather
+ясно ли будет,weather
+солнечно ли,weather
+какие осадки,weather
+погода в челябинске,weather
+прогноз погоды на завтра,weather
+погода в омске,weather
+погода в уфе,weather
+погода в перми,weather
+погода в воронеже,weather
+погода в волгограде,weather
+погода в краснодаре,weather
+погода в ростове,weather
+погода в тюмени,weather
+погода в барнауле,weather
+погода в иркутске,weather
+погода в владивостоке,weather
+погода в хабаровске,weather
+погода в нижнем новгороде,weather
+холодно сегодня,weather
+тепло сегодня,weather
+холодно завтра,weather
+тепло завтра,weather
+идёт снег,weather
+идёт дождь,weather
+нужна ли шуба,weather
+одеваться тепло,weather
+как одеться,weather
+что надеть,weather
+в чём выйти,weather
+выходить на улицу,weather
+как погода сейчас,weather
+погода сейчас,weather
+актуальная погода,weather
+текущая погода,weather
+погода прямо сейчас,weather
+как дела,how_are_you
+как жизнь,how_are_you
+как ты,how_are_you
+чё как,how_are_you
+как поживаешь,how_are_you
+ты как,how_are_you
+всё норм у тебя,how_are_you
+как настроение,how_are_you
+how are you,how_are_you
+как дела у тебя,how_are_you
+что нового,how_are_you
+как твои дела,how_are_you
+всё хорошо у тебя,how_are_you
+ты в порядке,how_are_you
+как сам,how_are_you
+как ты вообще,how_are_you
+как поживаешь бот,how_are_you
+чё творишь,how_are_you
+что делаешь,how_are_you
+как жизнь бот,how_are_you
+нормально дела,how_are_you
+как ты себя чувствуешь,how_are_you
+у тебя всё ок,how_are_you
+как ты там,how_are_you
+ну как ты,how_are_you
+как дела вообще,how_are_you
+что слышно,how_are_you
+всё норм,how_are_you
+как оно,how_are_you
+как ты поживаешь,how_are_you
+как здоровье,how_are_you
+как самочувствие,how_are_you
+как ты сегодня,how_are_you
+чё делаешь,how_are_you
+ну как оно,how_are_you
+как настрой,how_are_you
+что происходит,how_are_you
+как у тебя дела,how_are_you
+всё хорошо,how_are_you
+как жизнь проходит,how_are_you
+как ты себя,how_are_you
+норм дела,how_are_you
+чё как у тебя,how_are_you
+как жизнь у тебя,how_are_you
+что там у тебя,how_are_you
+у тебя норм,how_are_you
+всё в порядке у тебя,how_are_you
+как бот поживает,how_are_you
+как у бота дела,how_are_you
+бот как дела,how_are_you
+как дела бот,how_are_you
+чувствуешь себя нормально,how_are_you
+ты нормально,how_are_you
+всё ок,how_are_you
+всё окей,how_are_you
+как сегодня,how_are_you
+как вчера,how_are_you
+как работается,how_are_you
+как себя чувствуешь,how_are_you
+сколько время,time
+который час,time
+сколько времени,time
+что за время,time
+скажи время,time
+покажи время,time
+какое сейчас время,time
+что за час,time
+время сейчас,time
+скажи сколько времени,time
+который сейчас час,time
+время,time
+текущее время,time
+сколько щас,time
+время скажи,time
+узнать время,time
+какой час,time
+скажи мне время,time
+сейчас сколько,time
+а сколько времени,time
+время покажи,time
+который час сейчас,time
+скажи который час,time
+сколько сейчас времени,time
+ну сколько времени,time
+время подскажи,time
+подскажи время,time
+озвучь время,time
+что показывают часы,time
+часы,time
+скажи мне который час,time
+сколько на часах,time
+сколько времени сейчас,time
+узнай который час,time
+что сейчас за время,time
+актуальное время,time
+текущий час,time
+сколько сейчас,time
+час сейчас,time
+скажи час,time
+час,time
+хочу знать время,time
+мне нужно время,time
+время пожалуйста,time
+скажи пожалуйста время,time
+сколько времени пожалуйста,time
+который час пожалуйста,time
+подскажи который час,time
+подскажи сколько времени,time
+время у тебя,time
+у тебя время,time
+какое время,time
+время дня,time
+сколько часов,time
+который час на твоих,time
+на твоих сколько,time
+сколько времени у тебя,time
+у тебя сколько времени,time
+время сейчас у тебя,time
+спасибо,thanks
+благодарю,thanks
+сенкс,thanks
+thanks,thanks
+thank you,thanks
+спс,thanks
+благодарствую,thanks
+огромное спасибо,thanks
+спасибо большое,thanks
+сердечно благодарю,thanks
+спасибо тебе,thanks
+большое спасибо,thanks
+очень благодарен,thanks
+ценю,thanks
+спасибо боб,thanks
+очень спасибо,thanks
+спасибо за помощь,thanks
+благодарю тебя,thanks
+спасибо что помог,thanks
+спасибо тебе большое,thanks
+благодарен тебе,thanks
+премного благодарен,thanks
+спасибо дружище,thanks
+спасибо за ответ,thanks
+спасибо за информацию,thanks
+ты мне помог спасибо,thanks
+спасибо что ответил,thanks
+спасибо за подсказку,thanks
+мерси,thanks
+мерси боку,thanks
+данке,thanks
+gracias,thanks
+спасибки,thanks
+спасибочки,thanks
+от души спасибо,thanks
+спасибо огромное,thanks
+выражаю благодарность,thanks
+ценю твою помощь,thanks
+спасибо за всё,thanks
+очень тебе признателен,thanks
+душевное спасибо,thanks
+спасибо за работу,thanks
+спасибо за старание,thanks
+спасибо за скорость,thanks
+ты помог спасибо,thanks
+рад твоей помощи,thanks
+ценю помощь,thanks
+благодарность тебе,thanks
+моя благодарность,thanks
+выражаю признательность,thanks
+признателен тебе,thanks
+ты крут спасибо,thanks
+спасибо тебе бот,thanks
+спасибо бот,thanks
+спасибо за ответ бот,thanks
+благодарю бот,thanks
+благодарю за помощь,thanks
+спасибо большущее,thanks
+огромнейшее спасибо,thanks
+спасибо сердечное,thanks
+от всей души спасибо,thanks
+молодец,compliment
+умница,compliment
+класс,compliment
+отлично,compliment
+супер,compliment
+красава,compliment
+круто,compliment
+хорошо сделал,compliment
+классный бот,compliment
+умный,compliment
+ты молодец,compliment
+красавчик,compliment
+браво,compliment
+отличная работа,compliment
+ты крутой,compliment
+так держать,compliment
+продолжай в том же духе,compliment
+классно,compliment
+замечательно,compliment
+ты умный бот,compliment
+ты крутой бот,compliment
+отличный бот,compliment
+хороший бот,compliment
+ты хорошо работаешь,compliment
+зачётно,compliment
+огонь,compliment
+топ,compliment
+бомба,compliment
+шикарно,compliment
+великолепно,compliment
+восхитительно,compliment
+превосходно,compliment
+ты лучший,compliment
+лучший бот,compliment
+ты справился,compliment
+ты справился отлично,compliment
+ты всё правильно сделал,compliment
+ты меня удивил,compliment
+приятно удивлён,compliment
+ты хорош,compliment
+неплохо,compliment
+хорошая работа,compliment
+достойно,compliment
+уважаю,compliment
+респект,compliment
+снимаю шляпу,compliment
+ты умница,compliment
+ты отлично справляешься,compliment
+блестяще,compliment
+изумительно,compliment
+роскошно,compliment
+бесподобно,compliment
+безупречно,compliment
+ты на высоте,compliment
+ты выше всяких похвал,compliment
+выше всяких похвал,compliment
+ты просто огонь,compliment
+просто огонь,compliment
+ты топчик,compliment
+топчик,compliment
+вот это да,compliment
+вот это уровень,compliment
+ты меня поразил,compliment
+поразительно,compliment
+ты поражаешь,compliment
+не перестаёшь удивлять,compliment
+ты крутышка,compliment
+молодчина,compliment
+умничка,compliment
+хвалю тебя,compliment
+я тобой горжусь,compliment
+как тебя зовут,who_are_you
+твоё имя,who_are_you
+кто ты,who_are_you
+что ты такое,who_are_you
+представься,who_are_you
+ты кто,who_are_you
+как тебя называть,who_are_you
+имя бота,who_are_you
+как звать,who_are_you
+твоё имя пожалуйста,who_are_you
+ты бот или человек,who_are_you
+кто отвечает,who_are_you
+ты робот,who_are_you
+ты ии,who_are_you
+ты искусственный интеллект,who_are_you
+назовись,who_are_you
+скажи как тебя зовут,who_are_you
+кто я разговариваю,who_are_you
+ты программа,who_are_you
+что за бот,who_are_you
+как твоё имя,who_are_you
+что ты за существо,who_are_you
+с кем я говорю,who_are_you
+ты настоящий,who_are_you
+твоё название,who_are_you
+как называется этот бот,who_are_you
+ты чат бот,who_are_you
+ты нейросеть,who_are_you
+что за программа,who_are_you
+это бот,who_are_you
+ты автоматический,who_are_you
+расскажи о себе,who_are_you
+кто ты такой,who_are_you
+что ты умеешь,who_are_you
+ты умеешь думать,who_are_you
+ты разумный,who_are_you
+ты понимаешь меня,who_are_you
+ты настоящий интеллект,who_are_you
+ты создан людьми,who_are_you
+кто тебя создал,who_are_you
+ты виртуальный,who_are_you
+ты цифровой,who_are_you
+ты компьютерный,who_are_you
+как тебя величать,who_are_you
+как к тебе обращаться,who_are_you
+ты мне представишься,who_are_you
+ты скажешь своё имя,who_are_you
+твоё имя это,who_are_you
+как тебя именуют,who_are_you
+каково твоё имя,who_are_you
+назови себя,who_are_you
+скажи своё имя,who_are_you
+сообщи своё имя,who_are_you
+как тебя называет создатель,who_are_you
+твой никнейм,who_are_you
+твой ник,who_are_you
+ник бота,who_are_you
+посчитай,calculator
+вычисли,calculator
+сколько будет,calculator
+калькулятор,calculator
+реши пример,calculator
+2 плюс 2,calculator
+сколько будет 5 умножить на 3,calculator
+посчитай пример,calculator
+математика,calculator
+реши задачу,calculator
+10 минус 3,calculator
+помоги посчитать,calculator
+нужен калькулятор,calculator
+посчитай мне,calculator
+арифметика,calculator
+вычисли пример,calculator
+сколько это будет,calculator
+подсчитай,calculator
+посчитай результат,calculator
+посчитай 10 плюс 5,calculator
+сколько будет 100 минус 37,calculator
+вычисли 6 умножить на 7,calculator
+сколько будет 81 делить на 9,calculator
+реши 2 плюс 2,calculator
+посчитай сумму,calculator
+помоги с математикой,calculator
+нужно посчитать,calculator
+посчитай за меня,calculator
+дай ответ на пример,calculator
+реши математику,calculator
+математический пример,calculator
+посчитай числа,calculator
+сложи числа,calculator
+вычти числа,calculator
+перемножь числа,calculator
+раздели числа,calculator
+сумма чисел,calculator
+нужна помощь с числами,calculator
+посчитай для меня,calculator
+сколько будет 7 плюс 8,calculator
+сколько будет 15 минус 6,calculator
+сколько будет 4 умножить на 4,calculator
+сколько будет 20 делить на 4,calculator
+реши 10 плюс 10,calculator
+реши 50 минус 25,calculator
+реши 3 умножить на 9,calculator
+реши 100 делить на 5,calculator
+посчитай 2 умножить на 2,calculator
+посчитай 8 плюс 8,calculator
+вычисли 12 плюс 13,calculator
+вычисли 30 минус 15,calculator
+нужно вычислить,calculator
+произведи вычисление,calculator
+выполни вычисление,calculator
+реши арифметику,calculator
+помоги с арифметикой,calculator
+помоги с примером,calculator
+реши за меня,calculator
+посчитай пожалуйста,calculator
+вычисли пожалуйста,calculator
+история,history
+что мы обсуждали,history
+что я писал,history
+покажи историю,history
+предыдущие сообщения,history
+история чата,history
+что было раньше,history
+прокрути назад,history
+покажи переписку,history
+что я спрашивал,history
+предыстория,history
+моя история,history
+история разговора,history
+история диалога,history
+что было в начале,history
+прошлые сообщения,history
+покажи прошлое,history
+архив,history
+лог переписки,history
+что я говорил,history
+о чём мы говорили,history
+напомни что было,history
+вернись к началу,history
+что было до этого,history
+прошлый разговор,history
+прошлые запросы,history
+мои старые сообщения,history
+история сообщений,history
+листай назад,history
+покажи начало,history
+с чего начинали,history
+что было первым,history
+что я спрашивал раньше,history
+что спрашивал до,history
+мои предыдущие вопросы,history
+прокрути историю,history
+журнал чата,history
+лента сообщений,history
+сообщения за сегодня,history
+что было написано,history
+покажи что писали,history
+напомни разговор,history
+что мы говорили,history
+прошлые слова,history
+предыдущий диалог,history
+предыдущий разговор,history
+что до этого,history
+что я написал,history
+весь разговор,history
+список сообщений,history
+лог сообщений,history
+лог диалога,history
+покажи диалог,history
+диалог с начала,history
+прочитай историю,history
+напомни начало,history
+первые сообщения,history
+хей как дела,greeting
+хей привет как дела,greeting
+хей что нового,greeting
+эй как дела,greeting
+о привет как ты,greeting
+бот ты живой,how_are_you
+ты живой бот,how_are_you
+живой ты вообще,how_are_you
+ты работаешь,how_are_you
+бот ты тут,how_are_you
+ты вообще кто такой,who_are_you
+ты кто такой вообще,who_are_you
+кто это вообще,who_are_you
+это кто вообще,who_are_you
+сколько будет 9 на 9,calculator
+сколько будет 8 на 8,calculator
+сколько будет 7 на 6,calculator
+сколько будет 5 на 3,calculator
+посчитай 4 на 4,calculator
+что ты мне отвечал,history
+что ты отвечал раньше,history
+что ты говорил раньше,history
+вспомни что говорил,history
+напомни свои ответы,history
+ты кто вообще,who_are_you
+вообще кто ты,who_are_you
+ну ты как вообще,how_are_you
+ты вообще как себя чувствуешь,how_are_you
+ты вообще нормально себя чувствуешь,how_are_you
+какова погода,weather
+какова погодка,weather
+какова погода сегодня,weather
+какова погода завтра,weather
+какова погода в москве,weather
+какова погода на улице,weather
+какова погодка сегодня,weather
+какова погодка на улице,weather
+какова температура,weather
+какова температура на улице,weather
+какой прогноз сегодня,weather
+каков прогноз погоды,weather
+какая там погода,weather
+погода в моём городе,weather
+погода в любимом городе,weather
+погода в родном городе,weather
+что за погодка,weather
+что за погодка сегодня,weather
+как там погодка,weather
+погодка сегодня,weather
+погодка завтра,weather
+погодка в москве,weather
+кто ты,who_are_you
+ты кто,who_are_you
+кто это,who_are_you
+это кто,who_are_you
+кто ты такой,who_are_you
+ты кто такой,who_are_you
+а ты кто,who_are_you
+ну кто ты,who_are_you
+скажи кто ты,who_are_you
+ответь кто ты,who_are_you
+завтра будет солнце,weather
+завтра будет солнечно,weather
+завтра будет дождь,weather
+завтра будет снег,weather
+завтра будет ветер,weather
+завтра будет мороз,weather
+послезавтра будет солнце,weather
+сегодня будет солнце,weather
+сегодня будет дождь,weather
+будет ли солнце,weather
+будет ли солнечно,weather
+будет солнечно,weather
+будет дождливо,weather
+будет морозно,weather
+ну ты как вообще,how_are_you
+ты вообще как себя чувствуешь,how_are_you
+ну как ты вообще там,how_are_you
+ты как вообще себя,how_are_you
+как ты вообще себя чувствуешь,how_are_you
+ты живой или робот,who_are_you
+ты человек или робот,who_are_you
+ты робот или человек,who_are_you
+ты живой или нет,who_are_you
+ты живой или программа,who_are_you
+ты бот или живой,who_are_you
+до завтра,goodbye
+до завтра друг,goodbye
+до завтра дружище,goodbye
+до завтра приятель,goodbye
+до завтра бот,goodbye
+увидимся завтра,goodbye
+встретимся завтра,goodbye
+до завтрашнего,goodbye
+ты вообще кто,who_are_you
+ты вообще кто такой,who_are_you
+ты вообще что такое,who_are_you
